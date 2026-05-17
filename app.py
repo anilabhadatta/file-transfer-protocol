@@ -35,28 +35,28 @@ def get_storage():
     return (total, used, free)
 
 
-@app.route("/", methods=['GET'])
+@app.route("/ftp/", methods=['GET'])
 def search():
     return render_template("home.html", stats=load_files(), storage=get_storage())
 
 
-@app.route("/gen_del", methods=['POST', 'GET'])
+@app.route("/ftp/gen_del", methods=['POST', 'GET'])
 def gen_del():
     if request.method == "POST":
         filename = request.form.get('filename')
         if request.form.get("generate"):
             if filename:
-                return render_template("home.html", storage=get_storage(), stats=load_files(), download_path=f"/tmp/{filename}")
+                return render_template("home.html", storage=get_storage(), stats=load_files(), download_path=f"/ftp/tmp/{filename}")
             return render_template("404.html", message="Filename is empty")
         elif request.form.get("delete"):
             if filename:
                 os.remove(os.path.join(app.config['UPLOAD_FOLDER'], filename))
                 return render_template("home.html", storage=get_storage(), stats=load_files())
             return render_template("404.html", message="Filename is empty")
-    return redirect('/')
+    return redirect('/ftp/')
 
 
-@app.route("/upload", methods=['POST', 'GET'])
+@app.route("/ftp/upload", methods=['POST', 'GET'])
 def upload():
     if request.method == "POST":
         files = request.files['files']
@@ -81,10 +81,10 @@ def upload():
             if os.path.getsize(save_path) != int(request.form['dztotalfilesize']):
                 return make_response(('Size mismatch', 500))
         return make_response(('Chunck upload success', 200))
-    return redirect('/')
+    return redirect('/ftp/')
 
 
-@app.route("/tmp/<filename>")
+@app.route("/ftp/tmp/<filename>")
 def file_download(filename):
     try:
         d = send_from_directory(

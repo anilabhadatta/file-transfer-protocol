@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -37,9 +37,9 @@
       paramName: 'files',
       chunking: true,
       forceChunking: true,
-      url: '/upload',
+      url: '/ftp/upload',
       maxFilesize: 3000, // megabytes
-      chunkSize: 20000000, // bytes (20MB chunks for faster upload)
+      chunkSize: 1000000, // bytes (1MB chunks for faster upload)
       init: function () {
         this.on("queuecomplete", function (file) {
           $("#file_info").load(window.location.href + " #file_info");
@@ -59,7 +59,7 @@
           style="text-align: right; margin-left: 5px;">
           <i class="bi-folder2-open"></i> Refresh Page</label>
       </div>
-      <form action="/gen_del" method="POST" style="width: 85%">
+      <form action="/ftp/gen_del" method="POST" style="width: 85%">
         <div>
           <div style="width: 100%;" class="input-group mb-3">
             <input id="filename" class="form-control" type="text" name="filename"
@@ -80,7 +80,7 @@
     </div>
     </form>
 
-    <form action="/upload" method="POST" class="dropzone dz-clickable" id="dropper" enctype="multipart/form-data"
+    <form action="/ftp/upload" method="POST" class="dropzone dz-clickable" id="dropper" enctype="multipart/form-data"
       style="border-block-color: transparent"></form>
   </div>
   <div id="file_info">
@@ -90,7 +90,7 @@
     <li>
       <p style="display: inline-block;" id="{{file}}" onclick="copyElementText(this.id)">{{ file }} </p>
       <p onclick="copyElementText('{{file}}')" style="display: inline-block; padding: 3px;"> {{s}}</p><a
-        href="/tmp/{{file}}">Link</a>
+        href="/ftp/tmp/{{file}}">Link</a>
     </li>
     {% endfor %}
   </div>
